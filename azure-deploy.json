@@ -1,0 +1,170 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "workflow_name": {
+            "defaultValue": "ans-auto-delete-resource-automation-la",
+            "type": "String"
+        },
+        "workflow_subscription_id": {
+          "defaultValue": "YOUR_SUBSCRIPTION_ID"
+          "type": "String"
+        },
+        "workflow_location": {
+            "defaultValue": "uksouth",
+            "type": "String"
+        },
+        "workflow_tags": {
+            "defaultValue": {
+                "Application": "Sandbox resource cleanup automation",
+                "Criticality": "Tier 1",
+                "Owner": "Your Team",
+                "deployedBy": "ARM"
+            },
+            "type": "Object"
+        }
+    },
+    "outputs": {},
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Logic/workflows",
+            "apiVersion": "2017-07-01",
+            "name": "[parameters('workflow_name')]",
+            "location": "[parameters('workflow_location')]",
+            "identity": {
+                "type": "SystemAssigned"
+            },
+            "properties": {
+                "state": "Enabled",
+                "definition": {
+                    "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {},
+                    "triggers": {
+                        "Recurrence": {
+                            "recurrence": {
+                                "frequency": "Day",
+                                "interval": 1,
+                                "startTime": "2020-12-01T00:00:00Z",
+                                "timeZone": "GMT Standard Time"
+                            },
+                            "type": "Recurrence"
+                        }
+                    },
+                    "actions": {
+                        "For_each_resource_group": {
+                            "actions": {
+                                "For_each_resource": {
+                                    "actions": {
+                                        "Condition": {
+                                            "actions": {
+                                                "Delete_resource": {
+                                                    "inputs": {
+                                                        "authentication": {
+                                                            "audience": "https://management.azure.com",
+                                                            "type": "ManagedServiceIdentity"
+                                                        },
+                                                        "method": "DELETE",
+                                                        "queries": {
+                                                            "api-version": "2019-06-01"
+                                                        },
+                                                        "uri": "https://management.azure.com/@{items('For_each_resource')?['id']}"
+                                                    },
+                                                    "runAfter": {},
+                                                    "type": "Http"
+                                                }
+                                            },
+                                            "expression": {
+                                                "and": [
+                                                    {
+                                                        "equals": [
+                                                            "@items('For_each_resource')?['tags']?['AutoDeleteOn']",
+                                                            "@formatDateTime(utcNow(), 'dd-MM-yyyy')"
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            "runAfter": {},
+                                            "type": "If"
+                                        }
+                                    },
+                                    "foreach": "@body('Get_Resources')?['value']",
+                                    "runAfter": {
+                                        "Get_Resources": [
+                                            "Succeeded"
+                                        ]
+                                    },
+                                    "type": "Foreach"
+                                },
+                                "Get_Resources": {
+                                    "inputs": {
+                                        "authentication": {
+                                            "audience": "https://management.azure.com",
+                                            "type": "ManagedServiceIdentity"
+                                        },
+                                        "method": "GET",
+                                        "queries": {
+                                            "api-version": "2020-06-01"
+                                        },
+                                        "uri": "https://management.azure.com/subscriptions/@{variables('subscriptionid')}/resourcegroups/@{items('For_each_resource_group')['name']}/resources"
+                                    },
+                                    "runAfter": {},
+                                    "type": "Http"
+                                }
+                            },
+                            "foreach": "@body('Get_Resource_Groups')?['value']",
+                            "runAfter": {
+                                "Get_Resource_Groups": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "Foreach"
+                        },
+                        "Get_Resource_Groups": {
+                            "inputs": {
+                                "authentication": {
+                                    "audience": "https://management.azure.com",
+                                    "type": "ManagedServiceIdentity"
+                                },
+                                "method": "GET",
+                                "queries": {
+                                    "api-version": "2020-06-01"
+                                },
+                                "uri": "https://management.azure.com/subscriptions/@{variables('subscriptionid')}/resourcegroups"
+                            },
+                            "runAfter": {
+                                "Initialize_variable": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "runtimeConfiguration": {
+                                "staticResult": {
+                                    "name": "HTTP0",
+                                    "staticResultOptions": "Disabled"
+                                }
+                            },
+                            "type": "Http"
+                        },
+                        "Initialize_variable": {
+                            "inputs": {
+                                "variables": [
+                                    {
+                                        "name": "subscriptionid",
+                                        "type": "string",
+                                        "value": "[parameters('workflow_subscription_id')]"
+                                    }
+                                ]
+                            },
+                            "runAfter": {},
+                            "type": "InitializeVariable"
+                        }
+                    }, 
+                    "outputs": {}
+                },
+                "parameters": {}
+            },
+            "tags": "[parameters('workflow_tags')]"
+        }
+    ]
+}
