@@ -5,6 +5,10 @@
         "workflow_name": {
             "value": "ENTER_A_NAME_FOR_THE_LOGIC_APP"
         },
+         "workflow_subscription_id": {
+            "defaultValue": "YOUR_SUBSCRIPTION_ID"
+            "type": "String"
+        }
         "workflow_location": {
             "value": "uksouth"
         },
