@@ -7,7 +7,7 @@
             "type": "String"
         },
         "workflow_subscription_id": {
-          "defaultValue": "YOUR_SUBSCRIPTION_ID"
+          "defaultValue": "YOUR_SUBSCRIPTION_ID",
           "type": "String"
         },
         "workflow_location": {
