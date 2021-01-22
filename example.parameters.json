@@ -10,7 +10,7 @@
         },
         "workflow_tags": {
             "value": {
-                "Application": "Sandbox resource cleanup automatiob",
+                "Application": "Sandbox resource cleanup automation",
                 "Criticality": "Tier 1",
                 "Owner": "Your Team",
                 "deployedBy": "ARM"
