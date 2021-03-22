@@ -1,5 +1,5 @@
 {
-    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
         "workflow_name": {
@@ -75,11 +75,163 @@
                                                     "type": "Http"
                                                 }
                                             },
+                                            "else": {
+                                                "actions": {
+                                                    "Condition_2": {
+                                                        "actions": {
+                                                            "Send_an_email_(V2)": {
+                                                                "inputs": {
+                                                                    "body": {
+                                                                        "Body": "<p>This is a notification from Azure PRS Sandbox letting you know that your @{items('For_each_resource')} will expire on @{items('For_each_resource')?['tags']?['ExpiryDate']}.<br>\n<br>\nKind regards,<br>\nANS</p>",
+                                                                        "Subject": "PRS Azure Resource Deletion Notification ",
+                                                                        "To": "@{items('For_each_resource')?['tags']?['Email']}"
+                                                                    },
+                                                                    "host": {
+                                                                        "connection": {
+                                                                            "name": "@parameters('$connections')['office365']['connectionId']"
+                                                                        }
+                                                                    },
+                                                                    "method": "post",
+                                                                    "path": "/v2/Mail"
+                                                                },
+                                                                "runAfter": {},
+                                                                "type": "ApiConnection"
+                                                            }
+                                                        },
+                                                        "else": {
+                                                            "actions": {
+                                                                "Condition_3": {
+                                                                    "actions": {
+                                                                        "Send_an_email_(V2)_2": {
+                                                                            "inputs": {
+                                                                                "body": {
+                                                                                    "Body": "<p>This is a notification from Azure PRS Sandbox letting you know that your @{items('For_each_resource')} will expire on @{items('For_each_resource')?['tags']?['ExpiryDate']}.<br>\n<br>\nKind regards,<br>\nANS</p>",
+                                                                                    "Subject": "PRS Azure Resource Deletion Notification ",
+                                                                                    "To": "@{items('For_each_resource')?['tags']?['Email']}"
+                                                                                },
+                                                                                "host": {
+                                                                                    "connection": {
+                                                                                        "name": "@parameters('$connections')['office365']['connectionId']"
+                                                                                    }
+                                                                                },
+                                                                                "method": "post",
+                                                                                "path": "/v2/Mail"
+                                                                            },
+                                                                            "runAfter": {},
+                                                                            "type": "ApiConnection"
+                                                                        }
+                                                                    },
+                                                                    "else": {
+                                                                        "actions": {
+                                                                            "Condition_4": {
+                                                                                "actions": {
+                                                                                    "Send_an_email_(V2)_3": {
+                                                                                        "inputs": {
+                                                                                            "body": {
+                                                                                                "Body": "<p>This is a notification from Azure PRS Sandbox letting you know that your @{items('For_each_resource')} will expire on @{items('For_each_resource')?['tags']?['ExpiryDate']}.<br>\n<br>\nKind regards,<br>\nANS</p>",
+                                                                                                "Subject": "PRS Azure Resource Deletion Notification ",
+                                                                                                "To": "@{items('For_each_resource')?['tags']?['Email']}"
+                                                                                            },
+                                                                                            "host": {
+                                                                                                "connection": {
+                                                                                                    "name": "@parameters('$connections')['office365']['connectionId']"
+                                                                                                }
+                                                                                            },
+                                                                                            "method": "post",
+                                                                                            "path": "/v2/Mail"
+                                                                                        },
+                                                                                        "runAfter": {},
+                                                                                        "type": "ApiConnection"
+                                                                                    }
+                                                                                },
+                                                                                "else": {
+                                                                                    "actions": {
+                                                                                        "Condition_5": {
+                                                                                            "actions": {
+                                                                                                "Send_an_email_(V2)_4": {
+                                                                                                    "inputs": {
+                                                                                                        "body": {
+                                                                                                            "Body": "<p>This is a notification from Azure PRS Sandbox letting you know that your @{items('For_each_resource')} will expire on @{items('For_each_resource')?['tags']?['ExpiryDate']}.<br>\n<br>\nKind regards,<br>\nANS</p>",
+                                                                                                            "Subject": "PRS Azure Resource Deletion Notification ",
+                                                                                                            "To": "@{items('For_each_resource')?['tags']?['Email']}"
+                                                                                                        },
+                                                                                                        "host": {
+                                                                                                            "connection": {
+                                                                                                                "name": "@parameters('$connections')['office365']['connectionId']"
+                                                                                                            }
+                                                                                                        },
+                                                                                                        "method": "post",
+                                                                                                        "path": "/v2/Mail"
+                                                                                                    },
+                                                                                                    "runAfter": {},
+                                                                                                    "type": "ApiConnection"
+                                                                                                }
+                                                                                            },
+                                                                                            "expression": {
+                                                                                                "and": [
+                                                                                                    {
+                                                                                                        "equals": [
+                                                                                                            "@items('For_each_resource')?['tags']?['ExpiryDate']",
+                                                                                                            "@addDays(utcNow(), 3, 'dd-MM-yyyy')"
+                                                                                                        ]
+                                                                                                    }
+                                                                                                ]
+                                                                                            },
+                                                                                            "runAfter": {},
+                                                                                            "type": "If"
+                                                                                        }
+                                                                                    }
+                                                                                },
+                                                                                "expression": {
+                                                                                    "and": [
+                                                                                        {
+                                                                                            "equals": [
+                                                                                                "@items('For_each_resource')?['tags']?['ExpiryDate']",
+                                                                                                "@addDays(utcNow(), 7, 'dd-MM-yyyy')"
+                                                                                            ]
+                                                                                        }
+                                                                                    ]
+                                                                                },
+                                                                                "runAfter": {},
+                                                                                "type": "If"
+                                                                            }
+                                                                        }
+                                                                    },
+                                                                    "expression": {
+                                                                        "and": [
+                                                                            {
+                                                                                "equals": [
+                                                                                    "@items('For_each_resource')?['tags']?['ExpiryDate']",
+                                                                                    "@addDays(utcNow(), 14, 'dd-MM-yyyy')"
+                                                                                ]
+                                                                            }
+                                                                        ]
+                                                                    },
+                                                                    "runAfter": {},
+                                                                    "type": "If"
+                                                                }
+                                                            }
+                                                        },
+                                                        "expression": {
+                                                            "and": [
+                                                                {
+                                                                    "equals": [
+                                                                        "@items('For_each_resource')?['tags']?['ExpiryDate']",
+                                                                        "@addDays(utcNow(), 30, 'dd-MM-yyyy')"
+                                                                    ]
+                                                                }
+                                                            ]
+                                                        },
+                                                        "runAfter": {},
+                                                        "type": "If"
+                                                    }
+                                                }
+                                            },
                                             "expression": {
                                                 "and": [
                                                     {
                                                         "equals": [
-                                                            "@items('For_each_resource')?['tags']?['AutoDeleteOn']",
+                                                            "@items('For_each_resource')?['tags']?['ExpiryDate']",
                                                             "@formatDateTime(utcNow(), 'dd-MM-yyyy')"
                                                         ]
                                                     }
@@ -137,12 +289,6 @@
                                 "Initialize_variable": [
                                     "Succeeded"
                                 ]
-                            },
-                            "runtimeConfiguration": {
-                                "staticResult": {
-                                    "name": "HTTP0",
-                                    "staticResultOptions": "Disabled"
-                                }
                             },
                             "type": "Http"
                         },
