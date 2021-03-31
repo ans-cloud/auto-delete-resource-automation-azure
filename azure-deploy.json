@@ -82,9 +82,9 @@
                                                             "Send_an_email_(V2)": {
                                                                 "inputs": {
                                                                     "body": {
-                                                                        "Body": "<p>This is a notification from Azure PRS Sandbox letting you know that your @{items('For_each_resource')} will expire on @{items('For_each_resource')?['tags']?['ExpiryDate']}.<br>\n<br>\nKind regards,<br>\nANS</p>",
+                                                                        "Body": "<p>This is a notification from Azure PRS Sandbox letting you know that your @{items('For_each_resource_group')?['name']} will expire on @{items('For_each_resource')?['tags']?['ExpiryDate']}.<br>\n<br>\nKind regards,<br>\nANS</p>",
                                                                         "Subject": "PRS Azure Resource Deletion Notification ",
-                                                                        "To": "@{items('For_each_resource')?['tags']?['Email']}"
+                                                                        "To": "@{items('For_each_resource')?['tags']?['Owner']}"
                                                                     },
                                                                     "host": {
                                                                         "connection": {
@@ -105,9 +105,9 @@
                                                                         "Send_an_email_(V2)_2": {
                                                                             "inputs": {
                                                                                 "body": {
-                                                                                    "Body": "<p>This is a notification from Azure PRS Sandbox letting you know that your @{items('For_each_resource')} will expire on @{items('For_each_resource')?['tags']?['ExpiryDate']}.<br>\n<br>\nKind regards,<br>\nANS</p>",
+                                                                                    "Body": "<p>This is a notification from Azure PRS Sandbox letting you know that your @{items('For_each_resource_group')?['name']} will expire on @{items('For_each_resource')?['tags']?['ExpiryDate']}.<br>\n<br>\nKind regards,<br>\nANS</p>",
                                                                                     "Subject": "PRS Azure Resource Deletion Notification ",
-                                                                                    "To": "@{items('For_each_resource')?['tags']?['Email']}"
+                                                                                    "To": "@{items('For_each_resource')?['tags']?['Owner']}"
                                                                                 },
                                                                                 "host": {
                                                                                     "connection": {
@@ -128,9 +128,9 @@
                                                                                     "Send_an_email_(V2)_3": {
                                                                                         "inputs": {
                                                                                             "body": {
-                                                                                                "Body": "<p>This is a notification from Azure PRS Sandbox letting you know that your @{items('For_each_resource')} will expire on @{items('For_each_resource')?['tags']?['ExpiryDate']}.<br>\n<br>\nKind regards,<br>\nANS</p>",
+                                                                                                "Body": "<p>This is a notification from Azure PRS Sandbox letting you know that your @{items('For_each_resource_group')?['name']} will expire on @{items('For_each_resource')?['tags']?['ExpiryDate']}.<br>\n<br>\nKind regards,<br>\nANS</p>",
                                                                                                 "Subject": "PRS Azure Resource Deletion Notification ",
-                                                                                                "To": "@{items('For_each_resource')?['tags']?['Email']}"
+                                                                                                "To": "@{items('For_each_resource')?['tags']?['Owner']}"
                                                                                             },
                                                                                             "host": {
                                                                                                 "connection": {
@@ -151,9 +151,9 @@
                                                                                                 "Send_an_email_(V2)_4": {
                                                                                                     "inputs": {
                                                                                                         "body": {
-                                                                                                            "Body": "<p>This is a notification from Azure PRS Sandbox letting you know that your @{items('For_each_resource')} will expire on @{items('For_each_resource')?['tags']?['ExpiryDate']}.<br>\n<br>\nKind regards,<br>\nANS</p>",
+                                                                                                            "Body": "<p>This is a notification from Azure PRS Sandbox letting you know that your @{items('For_each_resource_group')?['name']} will expire on @{items('For_each_resource')?['tags']?['ExpiryDate']}.<br>\n<br>\nKind regards,<br>\nANS</p>",
                                                                                                             "Subject": "PRS Azure Resource Deletion Notification ",
-                                                                                                            "To": "@{items('For_each_resource')?['tags']?['Email']}"
+                                                                                                            "To": "@{items('For_each_resource')?['tags']?['Owner']}"
                                                                                                         },
                                                                                                         "host": {
                                                                                                             "connection": {
